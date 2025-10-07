@@ -1,0 +1,11 @@
+DB_NAME=database_name
+DB_USER=database_user
+DB_PASS=database_password
+DOMAIN_NAME=my_domain_name.example.com
+ADMIN_NAME=wordpress_admin_user
+ADMIN_PWD=wordpress_admin_password
+ADMIN_EMAIL=wordpress_admin_email
+USER_NAME=wordpress_username
+USER_PWD=wordpress_user_password
+FTP_USER=my_ftp_user
+FTP_PASS=my_ftp_password
