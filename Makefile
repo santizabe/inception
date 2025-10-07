@@ -12,7 +12,8 @@
 
 NAME = inception
 COMPOSE_FILE = srcs/docker-compose.yml
-BONUS_COMPOSE = srcs/docker-compose.bonus.yml
+BONUS_COMPOSE = srcs/requirements/bonus/docker-compose.bonus.yml
+BONUS_OVERRIDE = srcs/requirements/bonus/docker-compose.yml
 
 all: $(NAME)
 
@@ -23,12 +24,12 @@ $(NAME):
 	@docker compose -f ${COMPOSE_FILE} build
 	@docker-compose -f ${COMPOSE_FILE} up -d
 
-bonus:
+bonus: down
 	@printf "Starting ${NAME} bonus configuration\n"
 	@printf "Creating data directories..\n"
 	@mkdir -p ~/data/mariadb && mkdir -p ~/data/wordpress
-	@docker compose -f ${COMPOSE_FILE} -f ${BONUS_COMPOSE} build
-	@docker compose -f ${COMPOSE_FILE} -f ${BONUS_COMPOSE} up -d
+	@docker compose -f ${BONUS_OVERRIDE} -f ${BONUS_COMPOSE} build
+	@docker compose -f ${BONUS_OVERRIDE} -f ${BONUS_COMPOSE} up -d
 
 down:
 	@printf "Stopping ${NAME}\n"
@@ -36,7 +37,7 @@ down:
 
 b_down:
 	@printf "Stopping ${NAME} bonus\n"
-	@docker-compose -f ${COMPOSE_FILE} -f ${BONUS_COMPOSE} down
+	@docker-compose -f ${BONUS_OVERRIDE} -f ${BONUS_COMPOSE} down
 
 clean: down
 	@printf "Cleaning up\n"

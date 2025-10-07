@@ -1,0 +1,81 @@
+services:
+ nginx:
+  build:
+   context: ../nginx
+  image: nginx_bonus
+  container_name: nginx
+  environment:
+   - ENABLE_BONUS=true
+  ports:
+   - "443:443"
+  volumes:
+   - wp-data:/var/www
+  networks:
+   - inception
+  restart: on-failure
+
+ mariadb:
+  build:
+   context: ../mariadb
+   args:
+    DB_NAME: ${DB_NAME}
+    DB_USER: ${DB_USER}
+    DB_PASS: ${DB_PASS}
+  image: mariadb
+  ports:
+   - "3306"
+  container_name: mariadb
+  env_file: .env
+  volumes:
+   - db-volume:/var/lib/mysql
+  networks:
+   - inception
+  restart: on-failure
+  
+ wordpress:
+  container_name: wordpress
+  build:
+   context: ../wordpress
+  image: wordpress
+  env_file: .env
+  environment:
+   - WP_URL=https://${DOMAIN_NAME}
+   - WP_TITLE=Wordpress
+   - WP_ADMIN_USER=${ADMIN_NAME}
+   - WP_ADMIN_PASSWORD=${ADMIN_PWD}
+   - WP_ADMIN_EMAIL=${ADMIN_EMAIL}@42.fr
+   - WP_USER=${USER_NAME}
+   - WP_USER_EMAIL=${USER_NAME}@42.fr
+   - WP_USER_PASSWORD=${USER_PWD}
+   - DB_NAME=${DB_NAME}
+   - DB_USER=${DB_USER}
+   - DB_PASS=${DB_PASS}
+   - ENABLE_REDIS=true
+  depends_on:
+   mariadb:
+    condition: service_healthy
+  volumes:
+   - wp-data:/var/www
+  networks:
+   - inception
+  restart: on-failure
+
+volumes:
+ db-volume:
+  name: db-volume
+  driver: local
+  driver_opts:
+   type: none
+   device: ~/data/mariadb
+   o: bind
+ wp-data:
+  name: wp-data
+  driver: local
+  driver_opts:
+   type: none
+   device: ~/data/wordpress
+   o: bind
+
+networks:
+ inception:
+  name: inception

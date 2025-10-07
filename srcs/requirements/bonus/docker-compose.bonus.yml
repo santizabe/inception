@@ -1,6 +1,6 @@
 services:
   redis:
-    build: ./requirements/bonus/redis
+    build: ./redis
     image: redis
     container_name: redis
     networks:
@@ -10,7 +10,7 @@ services:
     restart: on-failure
 
   ftp:
-    build: ./requirements/bonus/ftp
+    build: ./ftp
     image: ftp
     container_name: ftp
     ports:
@@ -27,7 +27,7 @@ services:
     restart: on-failure
   
   website:
-    build: ./requirements/bonus/web
+    build: ./web
     image: website
     container_name: website
     networks:
@@ -35,7 +35,7 @@ services:
     restart: on-failure
 
   adminer:
-    build: ./requirements/bonus/adminer
+    build: ./adminer
     image: adminer
     container_name: adminer
     networks:
@@ -43,7 +43,7 @@ services:
     restart: on-failure
 
   prometheus:
-    build: ./requirements/bonus/prometheus
+    build: ./prometheus
     image: prometheus
     container_name: prometheus
     restart: on-failure
@@ -52,21 +52,8 @@ services:
     networks:
       - inception
     volumes:
-      - ./requirements/bonus/prometheus/conf/prometheus.yml:/prometheus/prometheus.yml:ro
+      - ./prometheus/conf/prometheus.yml:/prometheus/prometheus.yml:ro
       - prometheus_data:/prometheus/data
-
-  wordpress:
-    environment:
-      - ENABLE_REDIS=true
-      - ENABLE_ADMINER=true
-    depends_on:
-      - redis
-
-  nginx:
-    ports:
-      - "443:443"
-    environment:
-      - ENABLE_BONUS=true
 
 volumes:
   prometheus_data:
