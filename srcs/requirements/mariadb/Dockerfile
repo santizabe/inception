@@ -27,5 +27,5 @@ RUN chmod +x /usr/local/bin/config_db.sh
 
 CMD ["/usr/local/bin/config_db.sh"]
 
-HEALTHCHECK --interval=10s \
+HEALTHCHECK --interval=6s \
 	CMD mysqladmin ping -h mariadb -P 3306 --silent || exit 1

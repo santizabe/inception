@@ -20,6 +20,17 @@ if [ ! -f "/var/www/wp-config.php" ]; then
         --role=author --user_pass=$WP_USER_PASSWORD --path='/var/www'
 fi
 
+if [ "$ENABLE_REDIS" = "true" ]; then
+    wp config set WP_CACHE true --raw --allow-root --path='/var/www'
+    wp config set WP_REDIS_HOST redis --allow-root --path='/var/www'
+    wp config set WP_REDIS_PORT 6379 --raw --allow-root --path='/var/www'
+
+    if ! wp plugin is-installed redis-cache --allow-root --path='/var/www'; then
+        wp plugin install redis-cache --activate --allow-root --path='/var/www'
+    fi
+
+    wp redis enable --allow-root --path='/var/www'
+fi
 chown -R www-data /var/www
 chmod -R 777 /var/www
 

@@ -2,6 +2,7 @@ services:
  nginx:
   build:
    context: ./requirements/nginx
+  image: nginx
   container_name: nginx
   ports:
    - "443:443"
@@ -10,6 +11,7 @@ services:
   networks:
    - inception
   restart: on-failure
+
  mariadb:
   build:
    context: ./requirements/mariadb
@@ -17,6 +19,7 @@ services:
     DB_NAME: ${DB_NAME}
     DB_USER: ${DB_USER}
     DB_PASS: ${DB_PASS}
+  image: mariadb
   ports:
    - "3306"
   container_name: mariadb
@@ -26,10 +29,12 @@ services:
   networks:
    - inception
   restart: on-failure
+  
  wordpress:
   container_name: wordpress
   build:
    context: ./requirements/wordpress
+  image: wordpress
   env_file: .env
   environment:
    - WP_URL=https://${DOMAIN_NAME}

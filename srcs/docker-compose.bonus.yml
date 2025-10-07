@@ -1,0 +1,77 @@
+services:
+  redis:
+    build: ./requirements/bonus/redis
+    image: redis
+    container_name: redis
+    networks:
+      - inception
+    volumes:
+      - "wp-data:/var/www"
+    restart: on-failure
+
+  ftp:
+    build: ./requirements/bonus/ftp
+    image: ftp
+    container_name: ftp
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    volumes:
+      - ftp-data:/home/vsftpd
+    env_file: .env
+    environment:
+      FTP_USER: ${FTP_USER}
+      FTP_PASS: ${FTP_PASS}
+    networks:
+      - inception
+    restart: on-failure
+  
+  website:
+    build: ./requirements/bonus/web
+    image: website
+    container_name: website
+    networks:
+      - inception
+    restart: on-failure
+
+  adminer:
+    build: ./requirements/bonus/adminer
+    image: adminer
+    container_name: adminer
+    networks:
+      - inception
+    restart: on-failure
+
+  prometheus:
+    build: ./requirements/bonus/prometheus
+    image: prometheus
+    container_name: prometheus
+    restart: on-failure
+    ports:
+      - "9090:9090"
+    networks:
+      - inception
+    volumes:
+      - ./requirements/bonus/prometheus/conf/prometheus.yml:/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus/data
+
+  wordpress:
+    environment:
+      - ENABLE_REDIS=true
+      - ENABLE_ADMINER=true
+    depends_on:
+      - redis
+
+  nginx:
+    ports:
+      - "443:443"
+    environment:
+      - ENABLE_BONUS=true
+
+volumes:
+  prometheus_data:
+    name: prometheus_data
+    driver: local
+  ftp-data:
+    name: ftp_data
+    driver: local

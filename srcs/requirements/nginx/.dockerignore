@@ -1,0 +1,44 @@
+# Ignore Git data
+.git
+.gitignore
+
+# Ignore Docker-specific files
+.dockerignore
+Dockerfile*
+docker-compose*.yml
+
+# Node / frontend stuff
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Python stuff
+__pycache__/
+*.pyc
+*.pyo
+
+# Compiled binaries
+*.o
+*.a
+*.out
+*.class
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea
+.vscode
+
+# Logs and temp files
+*.log
+tmp/
+*.tmp
+
+# Secrets
+.env
+*.pem
+*.crt
+*.key
+
