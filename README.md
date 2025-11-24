@@ -237,7 +237,7 @@ DB_USER=wp_user
 DB_PASS=secure_db_password
 
 # Domain Configuration
-DOMAIN_NAME=santizabe.42.fr
+DOMAIN_NAME=<your-login>.42.fr
 
 # WordPress Admin Configuration
 ADMIN_NAME=wpadmin
@@ -254,7 +254,7 @@ FTP_PASS=secure_ftp_password
 ```
 
 **Important Notes:**
-- Replace `santizabe` with your 42 login
+- Replace `<your-login>` with your 42 login
 - Use strong, unique passwords for all services
 - Admin username must NOT contain 'admin', 'Admin', or 'administrator'
 - Never commit the `.env` file to version control
@@ -270,7 +270,7 @@ cd srcs/requirements/nginx/tools
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -keyout nginx.key \
   -out nginx.crt \
-  -subj "/C=ES/ST=Andalusia/L=Arcos/O=42/CN=santizabe.42.fr"
+  -subj "/C=ES/ST=Andalusia/L=Arcos/O=42/CN=<your-login>.42.fr"
 ```
 
 ## 💻 Usage
@@ -296,13 +296,13 @@ make fclean
 
 ### Access Services
 
-- **WordPress**: https://santizabe.42.fr
-- **Adminer**: https://santizabe.42.fr:8080
-- **Static Website**: https://santizabe.42.fr:8081
-- **Prometheus**: https://santizabe.42.fr:9090
-- **FTP**: ftp://santizabe.42.fr:21
+- **WordPress**: https://<your-login>.42.fr
+- **Adminer**: https://<your-login>.42.fr:8080
+- **Static Website**: https://<your-login>.42.fr:8081
+- **Prometheus**: https://<your-login>.42.fr:9090
+- **FTP**: ftp://<your-login>.42.fr:21
 
-Replace `santizabe` with your actual 42 login.
+Replace `<your-login>` with your actual 42 login.
 
 ### Docker Commands
 
